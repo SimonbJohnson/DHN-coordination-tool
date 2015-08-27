@@ -1,6 +1,5 @@
 .header {
     background-color:#B3130B;
-    padding-top:40px;
     padding-bottom:40px;
 }
 
@@ -69,4 +68,23 @@ h1 {
     border-bottom-color:#ddd;
     border-bottom-style:solid;
     border-bottom-width:1px;    
+}
+
+.title{
+    display:inline-block;
+}
+
+.sub {
+    padding-left:20px;
+    color:#999;
+}
+
+#searchcloud {
+    padding-top:20px;
+    font-size:1.5em;
+    text-align:center;
+}
+
+.cloudterm {
+    cursor:pointer;
 }

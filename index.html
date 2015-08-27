@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>DHN Nepal Earthquake Response</title>
+        <title>DHN Response site</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -9,6 +9,10 @@
         <link rel="stylesheet" type="text/css" href="css/site.css"/>
         <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+        <script src="config/sheets.js"></script>
+        <script src="config/config.js"></script>
+        <script src="js/d3.min.js"></script>
+        <script src="js/d3.layout.cloud.js"></script>
         <script type="text/javascript">
             var _gaq = _gaq || [];
             _gaq.push(['_setAccount', 'UA-46399763-1']);
@@ -24,22 +28,24 @@
     <body>
         <div class="header">
             <div class="container-fixed">
-                <h1>DHN ****** Response</h1>
-                <p class="subtitle">Search for topics of interest to see what is happening in the DHN for the ****** response</p>
+                <h1 id="configtitle"></h1>
+                <p id="configsubtitle" class="subtitle"></p>
             </div>
         </div>
         <div class="container-fixed">
             <div class="row">
                 <div id="search" class="col-md-12">
                     <input id="searchbox" type="text" name="search" placeholder="Search DHN...">
-                    <p class="padding-top"><a class="frontlink" href="about.html">About</a> <a class="frontlink" href="https://docs.google.com/spreadsheets/d/1d2UkH3fhBhKzksdctLZnXJ96DhvutreCmx9-WCNqLRs/edit?usp=sharing" target="_blank">Collab Google Doc</a> <a class="frontlink" href="https://data.hdx.rwlabs.org/group/nepal-earthquake" target="_blank">Data</a> <a class="frontlink" href="http://digitalhumanitarians.com/"  target="_blank">DHN Website</a></p> 
+                    <p class="padding-top"><a class="frontlink" href="about.html">About</a> <a id="configspreadsheet"class="frontlink" href="" target="_blank">Collab Google Doc</a> <a id="configdatalink" class="frontlink" href="" target="_blank">Data</a> <a class="frontlink" href="http://digitalhumanitarians.com/"  target="_blank">DHN Website</a></p> 
                 </div>
+                <div id="searchcloud" class="col-md-12">
+                    <p>Search Cloud of most used terms.</p>                   
+                </div>                
                 <div id="results" class="col-md-12">                   
                 </div>
             </div>
 	</div>
+    <script src="config/sheets.js"></script>
     <script src="js/dhn.js"></script>
-    <script src="https://spreadsheets.google.com/feeds/list/1d2UkH3fhBhKzksdctLZnXJ96DhvutreCmx9-WCNqLRs/od6/public/values?alt=json-in-script&callback=initR2W"></script>
-    <script src="https://spreadsheets.google.com/feeds/list/1d2UkH3fhBhKzksdctLZnXJ96DhvutreCmx9-WCNqLRs/oceo4z8/public/values?alt=json-in-script&callback=initSkypeRooms"></script>
     </body>    
 </html>
