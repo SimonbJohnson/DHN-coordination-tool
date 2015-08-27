@@ -78,3 +78,13 @@ h1 {
     padding-left:20px;
     color:#999;
 }
+
+#searchcloud {
+    padding-top:20px;
+    font-size:1.5em;
+    text-align:center;
+}
+
+.cloudterm {
+    cursor:pointer;
+}

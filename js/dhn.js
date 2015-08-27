@@ -1,3 +1,48 @@
+function drawCloud(words){
+
+    var maxCount = d3.max(words,function(d){return d.size});
+    console.log(maxCount);
+    var layout = d3.layout.cloud()
+        .size([$('#searchcloud').width(), 300 ])
+        .words(words)
+        .padding(5)
+        .rotate(0)
+        .font("Arial")
+        .fontSize(function(d) { return 10+d.size/maxCount*40; })
+        .on("end", draw);
+
+
+    layout.start();
+
+    function draw(words) {
+        d3.select("#searchcloud").append("svg")
+          .attr("width", layout.size()[0])
+          .attr("height", layout.size()[1])
+        .append("g")
+          .attr("transform", "translate(" + layout.size()[0] / 2 + "," + layout.size()[1] / 2 + ")")
+        .selectAll("text")
+          .data(words)
+        .enter().append("text")
+          .style("font-size", function(d) { return d.size + "px"; })
+          .style("font-family", "Arial")
+          .style("fill", "#B3130B")
+          .attr("class","cloudterm")
+          .attr("text-anchor", "middle")
+          .attr("transform", function(d) {
+            return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+          })
+          .text(function(d) { return d.text; })
+          .on("click",function(d){
+            $('#searchbox').val(d.text);
+            search(d.text);
+          });
+    }
+
+}
+
+
+
+
 function resultsHTML(result){
     var html = '<div class="resultitem">';
     if(result['#meta+url']!=''){
@@ -44,6 +89,8 @@ function searchResults(query){
 //compile search results
 
 function search(query){
+    $('#searchbox').blur();
+    $('#searchcloud').slideUp();
     var html = '<p>Contact the DHN coordinator for more details on anything listed below</p>';
     html = searchResults(query);
     $('#results').html(html);    
@@ -73,7 +120,7 @@ function compileSearchList(data){
         searchTerms.push(d['#org'].toLowerCase());
         searchTerms.push(d['#contact+name'].toLowerCase());
     });
-    return removeDuplicatesSort(searchTerms);
+    return searchTerms;
 }
 
 function hxlProxyToJSON(input){
@@ -108,7 +155,8 @@ function constructHXLURL(linkList){
             url+='&append-dataset01-0'+i+'='+l;
         }
     });
-    return url//+'&force=1';
+    console.log(url);
+    return url;
 }
 
 //function to remove duplicated from seacrch term lists
@@ -119,7 +167,31 @@ function removeDuplicatesSort(list){
     }).sort();    
 }
 
+function removeDuplicatesCountSort(list){
+    var newList = [];
+    list.forEach(function(t){
+        if(t!=''){
+            var found=false;
+            newList.forEach(function(e){
+                if(e.text==t){
+                    found=true;
+                    e.size+=1;
+                }
+            })
+            if(!found){
+                newList.push({'text':t,'size':1})
+            }
+        }
+    });
+    return newList;
+}
+
 var dataHXL;
+
+$('#configtitle').html(config.title);
+$('#configsubtitle').html(config.subtitle);
+$('#configdatalink').attr('href',config.datalink);
+$('#configspreadsheetlink').attr('href',config.spreadsheetlink);
 
 $('#searchbox').keypress(function (e) {
     if (e.which === 13) {
@@ -127,10 +199,16 @@ $('#searchbox').keypress(function (e) {
     }
 });
 
+$('#searchbox').on('focus',function(){  
+        $('#searchcloud').slideDown();
+})
+
 $.ajax(constructHXLURL(sheets), {
         success: function(data) {
             dataHXL = hxlProxyToJSON(data);
-            updateAutoComplete(compileSearchList(dataHXL));
+            var searchList = compileSearchList(dataHXL);
+            drawCloud(removeDuplicatesCountSort(searchList));
+            updateAutoComplete(removeDuplicatesSort(searchList));
         },
         error: function(e,err) {
             console.log(err);
