@@ -1,7 +1,6 @@
 function drawCloud(words){
 
     var maxCount = d3.max(words,function(d){return d.size});
-    console.log(maxCount);
     var layout = d3.layout.cloud()
         .size([$('#searchcloud').width(), 300 ])
         .words(words)
@@ -97,17 +96,15 @@ function search(query){
 }
 
 function updateAutoComplete(list){
-    console.log(list);
     $( "#searchbox" ).autocomplete({
       source: list,
       minLength: 2,
-      select: function(event, ui) { 
-            search($('#searchbox').val()); }
+      select: function(event, ui) {
+            search(ui.item.value); }
     });       
 }
 
 function compileSearchList(data){
-    console.log(data);
     var searchTerms = [];
     data.forEach(function(d){
         d['#meta+tags'].split(",").forEach(function(e){
@@ -155,7 +152,6 @@ function constructHXLURL(linkList){
             url+='&append-dataset01-0'+i+'='+l;
         }
     });
-    console.log(url);
     return url;
 }
 
